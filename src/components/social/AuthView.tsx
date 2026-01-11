@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Mail, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Mail, ShieldCheck, Users, Target, Lightbulb } from 'lucide-react';
 import { Logo } from './Logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -66,13 +66,36 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
       )}
 
       <div className="w-full max-w-sm text-center">
-        <Logo className="w-20 h-20 mx-auto mb-8" />
+        <Logo className="w-20 h-20 mx-auto mb-6" />
         <h1 className="text-2xl font-bold mb-2">
           {authStep === 'email' ? 'Welcome to RUconnected' : 'Verify your email'}
         </h1>
-        <p className="text-muted-foreground text-sm mb-8">
-          Exclusive community for Reichman University students.
+        <p className="text-muted-foreground text-sm mb-2">
+          {authStep === 'email' 
+            ? 'The exclusive network for Reichman University students'
+            : 'Enter the code we sent to your email'
+          }
         </p>
+
+        {authStep === 'email' && (
+          <div className="bg-card/50 border border-border rounded-xl p-4 mb-6 text-left">
+            <p className="text-xs font-semibold text-primary mb-3">Why join RUconnected?</p>
+            <ul className="space-y-2">
+              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Users size={14} className="text-primary shrink-0" />
+                Find study partners in your courses
+              </li>
+              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Target size={14} className="text-primary shrink-0" />
+                Build projects with co-founders
+              </li>
+              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Lightbulb size={14} className="text-primary shrink-0" />
+                Connect with students who share your interests
+              </li>
+            </ul>
+          </div>
+        )}
 
         {authStep === 'email' ? (
           <form onSubmit={handleEmailSubmit} className="space-y-4">
@@ -92,6 +115,9 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
               {isSubmitting ? 'Sending...' : 'Continue'}
               <ArrowRight className="ml-2" size={18} />
             </Button>
+            <p className="text-xs text-muted-foreground">
+              Tip: Use "demo" as email to explore with sample data
+            </p>
           </form>
         ) : (
           <form onSubmit={handleVerificationSubmit} className="space-y-4">
@@ -118,9 +144,9 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
         <div className="flex gap-3 p-4 bg-card rounded-2xl border border-border">
           <ShieldCheck className="text-primary shrink-0" size={24} />
           <div className="text-left">
-            <h3 className="font-bold text-sm">Student Exclusive Environment</h3>
+            <h3 className="font-bold text-sm">Student Exclusive</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              RUconnected is an exclusive community restricted to Reichman University students.
+              Only verified Reichman University students can join. Your privacy and safety matter.
             </p>
           </div>
         </div>

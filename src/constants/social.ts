@@ -148,16 +148,41 @@ export const INTERESTS_LIST = [
   'Movies', 'Nature', 'Cooking', 'Yoga'
 ];
 
+export const SKILLS_LIST = [
+  'Frontend Development', 'Backend Development', 'Mobile Development',
+  'UI/UX Design', 'Graphic Design', 'Data Analysis',
+  'Machine Learning', 'Product Management', 'Marketing',
+  'Sales', 'Finance', 'Legal', 'Content Writing',
+  'Video Editing', 'Photography', 'Public Speaking',
+  'Research', 'Project Management', 'Business Development'
+];
+
+export const AVAILABILITY_OPTIONS = [
+  'Few hours per week',
+  '10-20 hours per week',
+  'Full-time availability',
+  'Weekends only',
+  'Flexible schedule'
+];
+
+export const GROUP_SIZE_OPTIONS = [
+  '2-3 people',
+  '4-6 people',
+  '7+ people',
+  'No preference'
+];
+
 export const LOOKING_FOR_OPTIONS: LookingForType[] = [
   'Projects', 'Study Partners', 'Networking', 'Friendship', 'Sports'
 ];
 
+// Updated with younger-looking profile photos (19-26 age range)
 export const MOCK_USERS: UserProfile[] = [
   {
     id: 'u1',
     studentId: '123456',
     name: 'Maya Cohen',
-    age: 23,
+    age: 21,
     school: 'Israeli',
     degreeLevel: 'Undergraduate',
     degree: 'BSc Computer Science',
@@ -169,14 +194,16 @@ export const MOCK_USERS: UserProfile[] = [
     volunteering: [],
     bio: 'CS student passionate about generative AI. Looking for a backend developer for my final year project.',
     avatarColor: 'bg-purple-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    isOnline: true
+    avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop&crop=face',
+    isOnline: true,
+    skills: ['Frontend Development', 'Machine Learning'],
+    projectIdeas: 'Building an AI-powered study companion app'
   },
   {
     id: 'u2',
     studentId: '234567',
     name: 'Daniel Smith',
-    age: 21,
+    age: 20,
     school: 'International',
     degreeLevel: 'Undergraduate',
     degree: 'BA Business Administration',
@@ -188,14 +215,16 @@ export const MOCK_USERS: UserProfile[] = [
     volunteering: ['Seven10 stories'],
     bio: 'New to Israel! Love surfing and entrepreneurship. Looking for study buddies for Intro to Econ.',
     avatarColor: 'bg-blue-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop',
-    isOnline: false
+    avatarUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
+    isOnline: false,
+    skills: ['Marketing', 'Content Writing'],
+    projectIdeas: 'Sustainable fashion marketplace'
   },
   {
     id: 'u3',
     studentId: '345678',
     name: 'Noa Levi',
-    age: 24,
+    age: 22,
     school: 'Israeli',
     degreeLevel: 'Undergraduate',
     degree: 'BA Psychology',
@@ -207,14 +236,16 @@ export const MOCK_USERS: UserProfile[] = [
     volunteering: ['Writing Center Tutoring'],
     bio: 'Psych major. Building a platform for mental health awareness. Need help with UI/UX.',
     avatarColor: 'bg-pink-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
-    isOnline: true
+    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop&crop=face',
+    isOnline: true,
+    skills: ['Research', 'Content Writing', 'Photography'],
+    projectIdeas: 'Mental health awareness platform for students'
   },
   {
     id: 'u4',
     studentId: '456789',
     name: 'Tom Rossi',
-    age: 22,
+    age: 21,
     school: 'International',
     degreeLevel: 'Undergraduate',
     degree: 'BA Government',
@@ -226,14 +257,16 @@ export const MOCK_USERS: UserProfile[] = [
     volunteering: [],
     bio: 'RRIS Government student. Model UN enthusiast. Let\'s connect!',
     avatarColor: 'bg-emerald-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    isOnline: false
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
+    isOnline: false,
+    skills: ['Public Speaking', 'Research'],
+    projectIdeas: 'Student policy debate platform'
   },
   {
     id: 'u5',
     studentId: '567890',
     name: 'Yoni Ben-Ari',
-    age: 26,
+    age: 23,
     school: 'Israeli',
     degreeLevel: 'Undergraduate',
     degree: 'BA Entrepreneurship & Business Administration',
@@ -245,14 +278,16 @@ export const MOCK_USERS: UserProfile[] = [
     volunteering: [],
     bio: 'Building the next unicorn. Looking for a technical co-founder.',
     avatarColor: 'bg-orange-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
-    isOnline: true
+    avatarUrl: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&h=400&fit=crop&crop=face',
+    isOnline: true,
+    skills: ['Business Development', 'Product Management'],
+    projectIdeas: 'EdTech platform connecting students with mentors'
   },
   {
     id: 'u6',
     studentId: '678901',
     name: 'Sarah Miller',
-    age: 27,
+    age: 24,
     school: 'International',
     degreeLevel: 'Graduate',
     degree: 'Global MBA Program',
@@ -262,9 +297,11 @@ export const MOCK_USERS: UserProfile[] = [
     specialPrograms: [],
     clubs: ['Masters Club', 'Fintech Leader'],
     volunteering: [],
-    bio: 'MBA student with 4 years of experience in FinTech. Looking to network with developers.',
+    bio: 'MBA student with fintech background. Looking to network with developers.',
     avatarColor: 'bg-teal-600',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop',
-    isOnline: true
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face',
+    isOnline: true,
+    skills: ['Finance', 'Business Development', 'Project Management'],
+    projectIdeas: 'Fintech solution for student budgeting'
   }
 ];
