@@ -55,22 +55,20 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative">
+    <div className="h-[100dvh] bg-background flex flex-col items-center justify-between p-5 overflow-hidden">
       {authStep === 'verification' && generatedCode && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-primary/10 border border-primary/30 text-primary px-6 py-3 rounded-2xl shadow-xl backdrop-blur-sm">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary/70">Verification Code</p>
-            <p className="text-2xl font-mono font-bold tracking-widest">{generatedCode}</p>
-          </div>
+        <div className="bg-primary/10 border border-primary/30 text-primary px-5 py-2.5 rounded-2xl shadow-xl backdrop-blur-sm">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-primary/70">Verification Code</p>
+          <p className="text-xl font-mono font-bold tracking-widest">{generatedCode}</p>
         </div>
       )}
 
-      <div className="w-full max-w-sm text-center">
-        <Logo className="w-20 h-20 mx-auto mb-6" />
-        <h1 className="text-2xl font-bold mb-2">
+      <div className="w-full max-w-sm text-center flex-1 flex flex-col justify-center">
+        <Logo className="w-16 h-16 mx-auto mb-4" />
+        <h1 className="text-xl font-bold mb-1.5">
           {authStep === 'email' ? 'Welcome to RUconnected' : 'Verify your email'}
         </h1>
-        <p className="text-muted-foreground text-sm mb-2">
+        <p className="text-muted-foreground text-sm mb-4">
           {authStep === 'email' 
             ? 'The exclusive network for Reichman University students'
             : 'Enter the code we sent to your email'
@@ -78,18 +76,18 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
         </p>
 
         {authStep === 'email' && (
-          <div className="bg-card/50 border border-border rounded-xl p-4 mb-6 text-left">
-            <p className="text-xs font-semibold text-primary mb-3">Why join RUconnected?</p>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="bg-card/50 border border-border rounded-xl p-3 mb-5 text-left">
+            <p className="text-[11px] font-semibold text-primary mb-2">Why join RUconnected?</p>
+            <ul className="space-y-1.5">
+              <li className="flex items-center gap-2 text-[13px] text-muted-foreground">
                 <Users size={14} className="text-primary shrink-0" />
                 Find study partners in your courses
               </li>
-              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+              <li className="flex items-center gap-2 text-[13px] text-muted-foreground">
                 <Target size={14} className="text-primary shrink-0" />
                 Build projects with co-founders
               </li>
-              <li className="flex items-center gap-2 text-xs text-muted-foreground">
+              <li className="flex items-center gap-2 text-[13px] text-muted-foreground">
                 <Lightbulb size={14} className="text-primary shrink-0" />
                 Connect with students who share your interests
               </li>
@@ -140,13 +138,13 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
         )}
       </div>
 
-      <div className="absolute bottom-8 w-full max-w-sm px-6">
-        <div className="flex gap-3 p-4 bg-card rounded-2xl border border-border">
-          <ShieldCheck className="text-primary shrink-0" size={24} />
+      <div className="w-full max-w-sm shrink-0 pb-2">
+        <div className="flex gap-3 p-3 bg-card rounded-xl border border-border">
+          <ShieldCheck className="text-primary shrink-0" size={20} />
           <div className="text-left">
             <h3 className="font-bold text-sm">Student Exclusive</h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Only verified Reichman University students can join. Your privacy and safety matter.
+            <p className="text-[12px] text-muted-foreground mt-0.5">
+              Only verified Reichman University students can join.
             </p>
           </div>
         </div>

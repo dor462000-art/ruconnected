@@ -100,23 +100,23 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="p-6 border-b border-border bg-card/50 shrink-0">
-        <div className="flex items-center justify-center relative mb-6">
+    <div className="h-[100dvh] bg-background flex flex-col overflow-hidden">
+      <div className="p-4 border-b border-border bg-card/50 shrink-0">
+        <div className="flex items-center justify-center relative mb-4">
           {step > 0 && (
             <button
               onClick={() => setStep(s => s - 1)}
-              className="absolute left-0 p-2 hover:bg-accent rounded-full transition-colors text-muted-foreground"
+              className="absolute left-0 p-1.5 hover:bg-accent rounded-full transition-colors text-muted-foreground"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={22} />
             </button>
           )}
         </div>
-        <div className="flex gap-1.5">
+        <div className="flex gap-1">
           {steps.map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 flex-1 rounded-full transition-colors ${
+              className={`h-1 flex-1 rounded-full transition-colors ${
                 i <= step ? 'bg-primary' : 'bg-muted'
               }`}
             />
@@ -124,7 +124,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4">
         {/* Step 0: Welcome */}
         {step === 0 && (
           <div className="space-y-6 max-w-md mx-auto text-center py-8">

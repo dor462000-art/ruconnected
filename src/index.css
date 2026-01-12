@@ -71,6 +71,10 @@
     @apply border-border;
   }
 
+  html {
+    font-size: 18px; /* Larger base font for mobile */
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, sans-serif;
@@ -78,6 +82,13 @@
 
   code, pre {
     font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Mobile-first: optimize for 9:16 aspect ratio */
+  @media (max-width: 640px) {
+    html {
+      font-size: 17px;
+    }
   }
 }
 
