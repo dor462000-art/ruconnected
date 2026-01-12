@@ -54,47 +54,39 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full pb-20">
+    <div className="flex flex-col h-[100dvh] pb-20">
       {/* Header with value proposition */}
-      <div className="p-6 bg-card/50 backdrop-blur-md sticky top-0 z-20 border-b border-border">
-        <div className="flex justify-center items-center mb-4 relative">
-          <div className="text-center">
-            <h1 className="text-xl font-bold tracking-tight">RUconnected</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Find your perfect study partner or co-founder</p>
+      <div className="p-4 bg-card/50 backdrop-blur-md sticky top-0 z-20 border-b border-border shrink-0">
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <h1 className="text-lg font-bold tracking-tight">RUconnected</h1>
+            <p className="text-[12px] text-muted-foreground">Find your study partner or co-founder</p>
           </div>
           <button
             onClick={() => onNavigate('profile')}
-            className="absolute right-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center font-bold overflow-hidden shadow-lg border-2 border-primary/50 hover:scale-105 transition-transform"
+            className="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-bold overflow-hidden shadow-lg border-2 border-primary/50 hover:scale-105 transition-transform"
           >
             {currentUser.avatarUrl ? (
               <img src={currentUser.avatarUrl} alt="Me" className="w-full h-full object-cover" />
             ) : (
-              <span className="text-primary-foreground">{currentUser.name.charAt(0)}</span>
+              <span className="text-primary-foreground text-sm">{currentUser.name.charAt(0)}</span>
             )}
           </button>
         </div>
 
-        {/* Quick tips banner */}
-        <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 mb-4 flex items-start gap-3">
-          <Lightbulb size={18} className="text-primary shrink-0 mt-0.5" />
-          <div className="text-xs text-foreground/80">
-            <span className="font-semibold text-primary">Pro tip:</span> Students with shared interests appear first. Connect with them to start messaging or create group projects!
-          </div>
-        </div>
-
         <div className="relative">
-          <Search className="absolute left-3 top-3 text-muted-foreground" size={18} />
+          <Search className="absolute left-3 top-2.5 text-muted-foreground" size={16} />
           <Input
-            placeholder="Search by name, major, or interests..."
+            placeholder="Search name, major, interests..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-9 h-9 text-sm"
           />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredUsers.map(user => {
             const sharedInterests = getSharedInterests(user);
             const matchScore = getMatchScore(user);
@@ -103,19 +95,19 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
             return (
               <div
                 key={user.id}
-                className="bg-card border border-border rounded-3xl p-6 flex flex-col hover:border-primary/50 transition-all shadow-xl group"
+                className="bg-card border border-border rounded-2xl p-4 flex flex-col hover:border-primary/50 transition-all shadow-lg group"
               >
                 {/* Match indicator */}
                 {matchScore > 3 && (
-                  <div className="flex items-center gap-1.5 mb-3 text-primary">
-                    <Sparkles size={14} />
-                    <span className="text-xs font-bold">Great match!</span>
+                  <div className="flex items-center gap-1.5 mb-2 text-primary">
+                    <Sparkles size={12} />
+                    <span className="text-[11px] font-bold">Great match!</span>
                   </div>
                 )}
 
-                <div className="flex gap-4 mb-4">
+                <div className="flex gap-3 mb-3">
                   <div className="relative">
-                    <div className={`w-14 h-14 rounded-2xl ${user.avatarColor} flex items-center justify-center text-xl font-bold overflow-hidden shrink-0 shadow-inner`}>
+                    <div className={`w-12 h-12 rounded-xl ${user.avatarColor} flex items-center justify-center text-lg font-bold overflow-hidden shrink-0 shadow-inner`}>
                       {user.avatarUrl ? (
                         <img src={user.avatarUrl} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
@@ -123,26 +115,26 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                       )}
                     </div>
                     {user.isOnline && (
-                      <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-green-500 rounded-full border-2 border-card" />
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-card" />
                     )}
                   </div>
-                  <div>
-                    <h3 className="font-bold text-lg group-hover:text-primary transition-colors">{user.name}</h3>
-                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">{user.degree}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Year {user.year} • {user.school}</p>
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-base group-hover:text-primary transition-colors truncate">{user.name}</h3>
+                    <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wider truncate">{user.degree}</p>
+                    <p className="text-[11px] text-muted-foreground">Year {user.year} • {user.school}</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">{user.bio}</p>
+                <p className="text-[13px] text-muted-foreground mb-3 line-clamp-2 leading-snug">{user.bio}</p>
 
                 {/* Looking for */}
-                <div className="mb-4">
-                  <p className="text-xs text-muted-foreground mb-1.5 font-medium">Looking for:</p>
-                  <div className="flex flex-wrap gap-1.5">
+                <div className="mb-3">
+                  <p className="text-[11px] text-muted-foreground mb-1 font-medium">Looking for:</p>
+                  <div className="flex flex-wrap gap-1">
                     {user.lookingFor.map(l => (
                       <span 
                         key={l} 
-                        className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${
+                        className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ${
                           currentUser.lookingFor.includes(l)
                             ? 'bg-primary/20 text-primary'
                             : 'bg-muted text-muted-foreground'
@@ -155,12 +147,12 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                 </div>
 
                 {/* Interests with shared highlighted */}
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {user.interests.slice(0, 4).map(i => (
+                <div className="flex flex-wrap gap-1 mb-4">
+                  {user.interests.slice(0, 3).map(i => (
                     <Tooltip key={i}>
                       <TooltipTrigger>
                         <span 
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                          className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
                             sharedInterests.includes(i)
                               ? 'bg-primary/20 text-primary border border-primary/30'
                               : 'bg-muted text-muted-foreground'
@@ -176,21 +168,22 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                       )}
                     </Tooltip>
                   ))}
-                  {user.interests.length > 4 && (
-                    <span className="px-2 py-0.5 bg-muted rounded-md text-[10px] text-muted-foreground">
-                      +{user.interests.length - 4}
+                  {user.interests.length > 3 && (
+                    <span className="px-1.5 py-0.5 bg-muted rounded text-[9px] text-muted-foreground">
+                      +{user.interests.length - 3}
                     </span>
                   )}
                 </div>
 
-                <div className="mt-auto grid grid-cols-2 gap-3">
+                <div className="mt-auto grid grid-cols-2 gap-2">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         onClick={() => onConnect(user.id, user.name)}
                         disabled={isConnected}
                         variant={isConnected ? 'secondary' : 'default'}
-                        className="font-bold"
+                        size="sm"
+                        className="font-bold text-[13px]"
                       >
                         {isConnected ? 'Connected' : 'Connect'}
                       </Button>
@@ -205,7 +198,8 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
                       <Button
                         onClick={() => onStartChat(user.id, user.name)}
                         variant="outline"
-                        className="font-bold"
+                        size="sm"
+                        className="font-bold text-[13px]"
                         disabled={!isConnected}
                       >
                         Message
@@ -222,9 +216,9 @@ export const DiscoveryView: React.FC<DiscoveryViewProps> = ({
         </div>
 
         {filteredUsers.length === 0 && (
-          <div className="text-center py-12">
-            <Users size={48} className="mx-auto mb-4 text-muted-foreground/50" />
-            <p className="text-lg font-medium text-muted-foreground">No students found</p>
+          <div className="text-center py-8">
+            <Users size={40} className="mx-auto mb-3 text-muted-foreground/50" />
+            <p className="text-base font-medium text-muted-foreground">No students found</p>
             <p className="text-sm text-muted-foreground mt-1">Try adjusting your search</p>
           </div>
         )}
