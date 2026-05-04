@@ -173,8 +173,15 @@ export const GROUP_SIZE_OPTIONS = [
 ];
 
 export const LOOKING_FOR_OPTIONS: LookingForType[] = [
-  'Projects', 'Study Partners', 'Networking', 'Friendship', 'Sports'
+  'Projects', 'Study Partners', 'Networking', 'Friendship'
 ];
+
+export const POST_TYPES = [
+  'Looking for partners',
+  'Project idea',
+  'Question',
+  'Social'
+] as const;
 
 // Updated with younger-looking profile photos (19-26 age range)
 export const MOCK_USERS: UserProfile[] = [
