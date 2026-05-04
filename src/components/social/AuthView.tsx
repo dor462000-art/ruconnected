@@ -54,9 +54,9 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
   return (
     <div className="h-[100dvh] bg-background flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm flex flex-col items-center text-center">
-        <Logo className="w-32 h-32 mb-8" />
+        <Logo className="w-20 h-20 mb-6" />
 
-        <h1 className="text-3xl font-extrabold tracking-tight leading-tight mb-3">
+        <h1 className="text-2xl font-extrabold tracking-tight leading-tight mb-2">
           The exclusive network for Reichman students
         </h1>
 
