@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserProfile, Message, Attachment, ChatSession } from '@/types/social';
 import { MOCK_USERS } from '@/constants/social';
+import { InitialsAvatar } from './InitialsAvatar';
 
 interface ChatViewProps {
   currentUser: UserProfile;
@@ -95,13 +96,7 @@ export const ChatView: React.FC<ChatViewProps> = ({
           </div>
         ) : partner ? (
           <>
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-primary flex items-center justify-center">
-              {partner.avatarUrl ? (
-                <img src={partner.avatarUrl} alt={partner.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-primary-foreground font-bold">{partner.name.charAt(0)}</span>
-              )}
-            </div>
+            <InitialsAvatar name={partner.name} size={40} />
             <div className="flex-1">
               <h2 className="font-bold">{partner.name}</h2>
               <p className="text-xs text-muted-foreground">
