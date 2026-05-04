@@ -1,6 +1,6 @@
 export type SchoolType = 'Israeli' | 'International';
 export type DegreeLevel = 'Undergraduate' | 'Graduate';
-export type LookingForType = 'Projects' | 'Study Partners' | 'Networking' | 'Friendship' | 'Sports';
+export type LookingForType = 'Projects' | 'Study Partners' | 'Networking' | 'Friendship';
 
 export interface UserProfile {
   id: string;
@@ -20,7 +20,6 @@ export interface UserProfile {
   avatarColor: string;
   avatarUrl?: string;
   isOnline?: boolean;
-  // New onboarding fields
   projectIdeas?: string;
   skills?: string[];
   availability?: string;
@@ -65,7 +64,30 @@ export interface GroupChat {
   createdAt: Date;
 }
 
-export type ViewType = 'auth' | 'onboarding' | 'discovery' | 'chat_list' | 'chat_detail' | 'profile' | 'group_chats' | 'create_group';
+export type PostType = 'Looking for partners' | 'Project idea' | 'Question' | 'Social';
+
+export interface Post {
+  id: string;
+  authorId: string;
+  type: PostType;
+  text: string;
+  createdAt: Date;
+  likes: string[]; // userIds
+  comments: { id: string; authorId: string; text: string; createdAt: Date }[];
+}
+
+export type ViewType =
+  | 'auth'
+  | 'onboarding'
+  | 'welcome'
+  | 'feed'
+  | 'discovery'
+  | 'create_post'
+  | 'chat_list'
+  | 'chat_detail'
+  | 'profile'
+  | 'group_chats'
+  | 'create_group';
 
 export interface AppState {
   view: ViewType;
