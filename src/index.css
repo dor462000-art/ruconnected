@@ -2,67 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 222 20% 7%;
-    --foreground: 210 40% 96%;
+    --background: 0 0% 100%;
+    --foreground: 222 25% 12%;
 
-    --card: 222 18% 10%;
-    --card-foreground: 210 40% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 25% 12%;
 
-    --popover: 222 18% 10%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 25% 12%;
 
-    /* Primary blue #3461D6 = hsl(222, 69%, 52%) */
+    /* Primary blue #3461D6 */
     --primary: 222 69% 52%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 18% 15%;
-    --secondary-foreground: 210 40% 96%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 25% 12%;
 
-    --muted: 222 15% 18%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 222 10% 42%;
 
-    --accent: 222 60% 45%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 222 69% 96%;
+    --accent-foreground: 222 69% 30%;
 
     --destructive: 0 72% 51%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 15% 20%;
-    --input: 222 15% 15%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
     --ring: 222 69% 52%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* Custom tokens */
-    --glass-bg: 222 18% 10% / 0.6;
-    --glass-border: 222 15% 25% / 0.5;
-    --glow-primary: 222 69% 52% / 0.3;
-    --gradient-primary: linear-gradient(135deg, hsl(222 69% 52%), hsl(235 80% 60%));
-    --gradient-surface: linear-gradient(180deg, hsl(222 18% 12%), hsl(222 20% 8%));
-    --shadow-glow: 0 0 40px -10px hsl(222 69% 52% / 0.4);
-
-    /* Message colors */
-    --user-bubble: 222 15% 18%;
-    --ai-bubble: 222 18% 12%;
-    --ai-accent: 222 69% 52%;
-
-    --sidebar-background: 222 18% 8%;
-    --sidebar-foreground: 210 40% 90%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 25% 12%;
     --sidebar-primary: 222 69% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 15% 15%;
-    --sidebar-accent-foreground: 210 40% 96%;
-    --sidebar-border: 222 15% 18%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 25% 12%;
+    --sidebar-border: 220 13% 91%;
     --sidebar-ring: 222 69% 52%;
-  }
-
-  .dark {
-    --background: 222 20% 7%;
-    --foreground: 210 40% 96%;
   }
 }
 
@@ -72,7 +54,7 @@
   }
 
   html {
-    font-size: 18px; /* Larger base font for mobile */
+    font-size: 19px;
   }
 
   body {
@@ -80,92 +62,21 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
-  code, pre {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* Mobile-first: optimize for 9:16 aspect ratio */
   @media (max-width: 640px) {
     html {
-      font-size: 17px;
+      font-size: 18px;
     }
   }
-}
-
-@layer components {
-  .glass-panel {
-    @apply bg-[hsl(var(--glass-bg))] backdrop-blur-xl border border-[hsl(var(--glass-border))];
-  }
-
-  .glow-border {
-    box-shadow: 0 0 0 1px hsl(var(--border)), var(--shadow-glow);
-  }
-
-  .gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .message-enter {
-    animation: messageEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .typing-indicator span {
-    animation: bounce 1.4s infinite ease-in-out both;
-  }
-
-  .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-  .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-  .typing-indicator span:nth-child(3) { animation-delay: 0s; }
 }
 
 @layer utilities {
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: hsl(var(--muted)) transparent;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
   }
-
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted));
+    background: hsl(var(--muted-foreground) / 0.3);
     border-radius: 3px;
-  }
-}
-
-@keyframes messageEnter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes bounce {
-  0%, 80%, 100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 1;
   }
 }
