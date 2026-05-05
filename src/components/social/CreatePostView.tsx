@@ -86,9 +86,10 @@ export const CreatePostView: React.FC<CreatePostViewProps> = ({ currentUser, onB
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder={placeholders[type]}
-          className="min-h-[180px] text-base resize-none border-0 focus-visible:ring-0 px-0 shadow-none"
+          className="min-h-[200px] text-base resize-none rounded-2xl border border-border bg-background p-4"
           autoFocus
         />
+        <p className="text-xs text-muted-foreground mt-2">{text.length} characters</p>
       </div>
     </div>
   );
