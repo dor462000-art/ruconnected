@@ -79,7 +79,7 @@ export const ChatListView: React.FC<ChatListViewProps> = ({
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto divide-y divide-border">
-          {groups.map(g => {
+          {groups.filter(g => g.name.toLowerCase().includes(search.toLowerCase())).map(g => {
             const last = getLast(g.messages);
             return (
               <button
@@ -103,6 +103,7 @@ export const ChatListView: React.FC<ChatListViewProps> = ({
           {chats.map(chat => {
             const partner = getPartner(chat);
             if (!partner) return null;
+            if (search && !partner.name.toLowerCase().includes(search.toLowerCase())) return null;
             const last = getLast(chat.messages);
             return (
               <button
