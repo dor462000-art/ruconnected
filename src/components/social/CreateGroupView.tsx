@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, X, Users, Search } from 'lucide-react';
+import { ArrowLeft, Check, Users, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { UserProfile, GroupChat } from '@/types/social';
-import { MOCK_USERS, INTERESTS_LIST } from '@/constants/social';
+import { MOCK_USERS } from '@/constants/social';
 
 interface CreateGroupViewProps {
   currentUser: UserProfile;
@@ -22,7 +22,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
   const [step, setStep] = useState(0);
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -33,14 +32,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
   const filteredUsers = connectedUsers.filter(u =>
     u.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const toggleInterest = (interest: string) => {
-    setSelectedInterests(prev =>
-      prev.includes(interest)
-        ? prev.filter(i => i !== interest)
-        : [...prev, interest]
-    );
-  };
 
   const toggleMember = (userId: string) => {
     setSelectedMembers(prev =>
@@ -57,7 +48,7 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
       description,
       participantIds: [currentUser.id, ...selectedMembers],
       createdBy: currentUser.id,
-      interests: selectedInterests,
+      interests: [],
       messages: [],
       createdAt: new Date()
     };
@@ -66,25 +57,25 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
 
   const canProceed = () => {
     if (step === 0) return groupName.trim().length >= 3;
-    if (step === 1) return selectedInterests.length > 0;
-    if (step === 2) return selectedMembers.length >= 1;
+    if (step === 1) return selectedMembers.length >= 1;
     return true;
   };
 
   return (
     <div className="flex flex-col h-full bg-background">
       <div className="p-4 border-b border-border bg-card/50 flex items-center gap-3">
-        <button onClick={onBack} className="p-2 hover:bg-muted rounded-full transition-colors">
-          <ArrowLeft size={20} />
+        <button onClick={onBack} className="flex items-center gap-1 px-2 py-1 -ml-2 hover:bg-muted rounded-full transition-colors text-primary">
+          <ArrowLeft size={18} />
+          <span className="text-sm font-medium">Back</span>
         </button>
         <div className="flex-1">
           <h1 className="font-bold">Create Group Chat</h1>
-          <p className="text-xs text-muted-foreground">Step {step + 1} of 3</p>
+          <p className="text-xs text-muted-foreground">Step {step + 1} of 2</p>
         </div>
       </div>
 
       <div className="flex gap-2 px-4 pt-4">
-        {[0, 1, 2].map(i => (
+        {[0, 1].map(i => (
           <div
             key={i}
             className={`h-1.5 flex-1 rounded-full transition-colors ${
