@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ChevronDown, ChevronUp, GraduationCap, Heart, Lightbulb, Target, User } from 'lucide-react';
+import { ArrowRight, ArrowLeft, ChevronDown, ChevronUp, GraduationCap, Heart, Lightbulb, HandHeart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserProfile, SchoolType, DegreeLevel } from '@/types/social';
@@ -10,6 +10,7 @@ import {
   ISRAELI_GRADUATE_DEGREES,
   SPECIAL_PROGRAMS_LIST,
   CLUBS_LIST,
+  VOLUNTEERING_LIST,
   INTERESTS_LIST,
   LOOKING_FOR_OPTIONS,
   SKILLS_LIST,
@@ -286,11 +287,18 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           </Section>
         </div>
 
-        <div className="px-6 py-4 border-t border-border">
+        <div className="px-6 py-4 border-t border-border flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setStep('identity')}
+            className="h-14 px-5 rounded-xl font-semibold"
+          >
+            <ArrowLeft size={18} className="mr-1" /> Back
+          </Button>
           <Button
             onClick={() => setStep('goals')}
             disabled={!academicValid}
-            className="w-full h-14 text-base rounded-xl font-semibold"
+            className="flex-1 h-14 text-base rounded-xl font-semibold"
           >
             Continue <ArrowRight className="ml-1" size={20} />
           </Button>
@@ -345,11 +353,18 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           </div>
         </div>
       </div>
-      <div className="px-6 py-4 border-t border-border">
+      <div className="px-6 py-4 border-t border-border flex gap-3">
+        <Button
+          variant="outline"
+          onClick={() => setStep('sections')}
+          className="h-14 px-5 rounded-xl font-semibold"
+        >
+          <ArrowLeft size={18} className="mr-1" /> Back
+        </Button>
         <Button
           onClick={finish}
           disabled={!goalsValid}
-          className="w-full h-14 text-base rounded-xl font-semibold"
+          className="flex-1 h-14 text-base rounded-xl font-semibold"
         >
           Finish <ArrowRight className="ml-1" size={20} />
         </Button>

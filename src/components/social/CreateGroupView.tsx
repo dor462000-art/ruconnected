@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Check, X, Users, Search } from 'lucide-react';
+import { ArrowLeft, Check, Users, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { UserProfile, GroupChat } from '@/types/social';
-import { MOCK_USERS, INTERESTS_LIST } from '@/constants/social';
+import { MOCK_USERS } from '@/constants/social';
 
 interface CreateGroupViewProps {
   currentUser: UserProfile;
@@ -22,7 +22,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
   const [step, setStep] = useState(0);
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -33,14 +32,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
   const filteredUsers = connectedUsers.filter(u =>
     u.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const toggleInterest = (interest: string) => {
-    setSelectedInterests(prev =>
-      prev.includes(interest)
-        ? prev.filter(i => i !== interest)
-        : [...prev, interest]
-    );
-  };
 
   const toggleMember = (userId: string) => {
     setSelectedMembers(prev =>
@@ -57,7 +48,7 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
       description,
       participantIds: [currentUser.id, ...selectedMembers],
       createdBy: currentUser.id,
-      interests: selectedInterests,
+      interests: [],
       messages: [],
       createdAt: new Date()
     };
@@ -66,25 +57,25 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
 
   const canProceed = () => {
     if (step === 0) return groupName.trim().length >= 3;
-    if (step === 1) return selectedInterests.length > 0;
-    if (step === 2) return selectedMembers.length >= 1;
+    if (step === 1) return selectedMembers.length >= 1;
     return true;
   };
 
   return (
     <div className="flex flex-col h-full bg-background">
       <div className="p-4 border-b border-border bg-card/50 flex items-center gap-3">
-        <button onClick={onBack} className="p-2 hover:bg-muted rounded-full transition-colors">
-          <ArrowLeft size={20} />
+        <button onClick={onBack} className="flex items-center gap-1 px-2 py-1 -ml-2 hover:bg-muted rounded-full transition-colors text-primary">
+          <ArrowLeft size={18} />
+          <span className="text-sm font-medium">Back</span>
         </button>
         <div className="flex-1">
           <h1 className="font-bold">Create Group Chat</h1>
-          <p className="text-xs text-muted-foreground">Step {step + 1} of 3</p>
+          <p className="text-xs text-muted-foreground">Step {step + 1} of 2</p>
         </div>
       </div>
 
       <div className="flex gap-2 px-4 pt-4">
-        {[0, 1, 2].map(i => (
+        {[0, 1].map(i => (
           <div
             key={i}
             className={`h-1.5 flex-1 rounded-full transition-colors ${
@@ -131,37 +122,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
         )}
 
         {step === 1 && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-bold">Group Interests</h2>
-              <p className="text-muted-foreground text-sm mt-1">
-                Select interests that match your group's focus
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {INTERESTS_LIST.map(interest => (
-                <button
-                  key={interest}
-                  onClick={() => toggleInterest(interest)}
-                  className={`px-4 py-2 rounded-full border text-sm font-medium transition-all ${
-                    selectedInterests.includes(interest)
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border bg-card text-muted-foreground hover:border-primary/50'
-                  }`}
-                >
-                  {interest}
-                </button>
-              ))}
-            </div>
-            {selectedInterests.length > 0 && (
-              <p className="text-sm text-primary">
-                {selectedInterests.length} interest{selectedInterests.length !== 1 ? 's' : ''} selected
-              </p>
-            )}
-          </div>
-        )}
-
-        {step === 2 && (
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-bold">Add Members</h2>
@@ -238,14 +198,14 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
       <div className="p-6 border-t border-border bg-card/50">
         <Button
           onClick={() => {
-            if (step < 2) setStep(s => s + 1);
+            if (step < 1) setStep(s => s + 1);
             else handleCreate();
           }}
           disabled={!canProceed()}
           className="w-full"
           size="lg"
         >
-          {step === 2 ? 'Create Group' : 'Continue'}
+          {step === 1 ? 'Create Group' : 'Continue'}
         </Button>
       </div>
     </div>

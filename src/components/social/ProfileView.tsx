@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Edit2, LogOut, Sparkles, Save, X } from 'lucide-react';
+import { GraduationCap, Edit2, LogOut, Sparkles, Save, X, HandHeart, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,6 +9,7 @@ import {
   INTERNATIONAL_GRADUATE_DEGREES,
   ISRAELI_UNDERGRADUATE_DEGREES,
   ISRAELI_GRADUATE_DEGREES,
+  VOLUNTEERING_LIST,
 } from '@/constants/social';
 import { InitialsAvatar } from './InitialsAvatar';
 
@@ -21,6 +22,14 @@ interface ProfileViewProps {
 export const ProfileView: React.FC<ProfileViewProps> = ({ user, onUpdate, onLogout }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Partial<UserProfile>>(user);
+  const [volOpen, setVolOpen] = useState(false);
+
+  const toggleVolunteering = (item: string) => {
+    setData(prev => {
+      const arr = prev.volunteering || [];
+      return { ...prev, volunteering: arr.includes(item) ? arr.filter(i => i !== item) : [...arr, item] };
+    });
+  };
 
   const getDegreeList = (school?: SchoolType, level?: DegreeLevel) => {
     if (!school || !level) return [];
@@ -150,6 +159,58 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ user, onUpdate, onLogo
             </div>
           </section>
         )}
+
+        {/* Volunteering (collapsible, optional) */}
+        <section className="border border-border rounded-2xl overflow-hidden">
+          <button
+            onClick={() => setVolOpen(o => !o)}
+            className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted/50 transition-colors"
+          >
+            <HandHeart size={18} className="text-primary" />
+            <div className="flex-1 text-left">
+              <p className="font-bold">Volunteering</p>
+              <p className="text-xs text-muted-foreground">Optional</p>
+            </div>
+            {volOpen ? <ChevronUp size={20} className="text-muted-foreground" /> : <ChevronDown size={20} className="text-muted-foreground" />}
+          </button>
+          {volOpen && (
+            <div className="px-5 pb-5">
+              {editing ? (
+                <>
+                  <select
+                    onChange={(e) => { if (e.target.value) { toggleVolunteering(e.target.value); e.target.value = ''; } }}
+                    className="w-full bg-background border border-border rounded-lg p-2 text-sm"
+                  >
+                    <option value="">Add volunteering...</option>
+                    {VOLUNTEERING_LIST.filter(v => !(data.volunteering || []).includes(v)).map(v => (
+                      <option key={v} value={v}>{v}</option>
+                    ))}
+                  </select>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {(data.volunteering || []).map(item => (
+                      <span key={item} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs flex items-center gap-2">
+                        {item}
+                        <button onClick={() => toggleVolunteering(item)}>×</button>
+                      </span>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                (user.volunteering || []).length === 0 ? (
+                  <p className="text-sm text-muted-foreground">No volunteering yet — tap edit to add.</p>
+                ) : (
+                  <div className="flex flex-wrap gap-2">
+                    {(user.volunteering || []).map(v => (
+                      <span key={v} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs font-semibold">
+                        {v}
+                      </span>
+                    ))}
+                  </div>
+                )
+              )}
+            </div>
+          )}
+        </section>
 
         <Button onClick={onLogout} variant="outline" className="w-full text-destructive border-destructive/30 hover:bg-destructive/5 rounded-xl">
           <LogOut size={18} className="mr-2" /> Log out
