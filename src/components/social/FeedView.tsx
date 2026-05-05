@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Sparkles, HelpCircle, Lightbulb, Coffee, Filter } from 'lucide-react';
-import { UserProfile, Post, PostType } from '@/types/social';
+import { Heart, MessageCircle, Sparkles, HelpCircle, Lightbulb, Coffee, Filter, Share2, X, Send } from 'lucide-react';
+import { UserProfile, Post, PostType, ChatSession } from '@/types/social';
 import { MOCK_USERS, POST_TYPES } from '@/constants/social';
 import { InitialsAvatar } from './InitialsAvatar';
 
 interface FeedViewProps {
   currentUser: UserProfile;
   posts: Post[];
+  chats: ChatSession[];
   onLike: (postId: string) => void;
   onOpenProfile: () => void;
+  onShareToChat: (chatId: string, postText: string) => void;
 }
 
 const TYPE_META: Record<PostType, { icon: any; color: string; label: string }> = {
@@ -18,8 +20,9 @@ const TYPE_META: Record<PostType, { icon: any; color: string; label: string }> =
   'Social': { icon: Coffee, color: 'bg-pink-100 text-pink-700', label: 'Social' },
 };
 
-export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, onLike, onOpenProfile }) => {
+export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, chats, onLike, onOpenProfile, onShareToChat }) => {
   const [filter, setFilter] = useState<PostType | 'All'>('All');
+  const [sharingPost, setSharingPost] = useState<Post | null>(null);
 
   const filtered = filter === 'All' ? posts : posts.filter(p => p.type === filter);
 
@@ -47,8 +50,8 @@ export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, onLike, 
               onClick={() => setFilter(t as any)}
               className={`px-3.5 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border transition-colors ${
                 filter === t
-                  ? 'bg-foreground text-background border-foreground'
-                  : 'bg-background text-foreground border-border hover:border-foreground/30'
+                  ? 'bg-primary text-primary-foreground border-primary'
+                  : 'bg-background text-foreground border-border hover:border-primary/40'
               }`}
             >
               {t}

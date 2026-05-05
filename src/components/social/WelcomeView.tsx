@@ -60,9 +60,11 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ name, onContinue }) =>
         </div>
       </div>
 
+      <div className="h-8" />
+
       <Button
         onClick={onContinue}
-        className="w-full max-w-md mx-auto h-14 text-base rounded-xl font-semibold"
+        className="w-full max-w-md mx-auto h-14 text-base rounded-xl font-semibold mt-6"
       >
         Enter RUconnected
         <ArrowRight className="ml-1" size={20} />
