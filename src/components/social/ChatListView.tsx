@@ -1,8 +1,9 @@
-import React from 'react';
-import { MessageSquare, Users, UsersRound } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageSquare, Users, UserPlus, Search } from 'lucide-react';
 import { UserProfile, ChatSession, GroupChat } from '@/types/social';
 import { MOCK_USERS } from '@/constants/social';
 import { InitialsAvatar } from './InitialsAvatar';
+import { Input } from '@/components/ui/input';
 
 interface ChatListViewProps {
   currentUser: UserProfile;
@@ -21,6 +22,8 @@ export const ChatListView: React.FC<ChatListViewProps> = ({
   onSelectGroup,
   onCreateGroup,
 }) => {
+  const [search, setSearch] = useState('');
+
   const getPartner = (chat: ChatSession) => {
     const partnerId = chat.participantIds.find(id => id !== currentUser.id);
     return MOCK_USERS.find(u => u.id === partnerId);
@@ -50,9 +53,21 @@ export const ChatListView: React.FC<ChatListViewProps> = ({
           aria-label="Create group"
           className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:scale-105 transition-transform"
         >
-          <UsersRound size={20} />
+          <UserPlus size={20} />
         </button>
       </header>
+
+      <div className="px-4 py-3 border-b border-border">
+        <div className="relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search chats..."
+            className="pl-9 h-10 rounded-full"
+          />
+        </div>
+      </div>
 
       {empty ? (
         <div className="flex-1 flex items-center justify-center text-muted-foreground p-8 text-center">
