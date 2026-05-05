@@ -124,37 +124,6 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-bold">Group Interests</h2>
-              <p className="text-muted-foreground text-sm mt-1">
-                Select interests that match your group's focus
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {INTERESTS_LIST.map(interest => (
-                <button
-                  key={interest}
-                  onClick={() => toggleInterest(interest)}
-                  className={`px-4 py-2 rounded-full border text-sm font-medium transition-all ${
-                    selectedInterests.includes(interest)
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border bg-card text-muted-foreground hover:border-primary/50'
-                  }`}
-                >
-                  {interest}
-                </button>
-              ))}
-            </div>
-            {selectedInterests.length > 0 && (
-              <p className="text-sm text-primary">
-                {selectedInterests.length} interest{selectedInterests.length !== 1 ? 's' : ''} selected
-              </p>
-            )}
-          </div>
-        )}
-
-        {step === 2 && (
-          <div className="space-y-6">
-            <div>
               <h2 className="text-xl font-bold">Add Members</h2>
               <p className="text-muted-foreground text-sm mt-1">
                 Add people from your connections to the group
