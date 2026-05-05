@@ -353,11 +353,18 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           </div>
         </div>
       </div>
-      <div className="px-6 py-4 border-t border-border">
+      <div className="px-6 py-4 border-t border-border flex gap-3">
+        <Button
+          variant="outline"
+          onClick={() => setStep('sections')}
+          className="h-14 px-5 rounded-xl font-semibold"
+        >
+          <ArrowLeft size={18} className="mr-1" /> Back
+        </Button>
         <Button
           onClick={finish}
           disabled={!goalsValid}
-          className="w-full h-14 text-base rounded-xl font-semibold"
+          className="flex-1 h-14 text-base rounded-xl font-semibold"
         >
           Finish <ArrowRight className="ml-1" size={20} />
         </Button>
