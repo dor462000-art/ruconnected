@@ -68,7 +68,7 @@ export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, chats, o
             <p className="text-sm mt-1">Be the first to post — tap the + button below.</p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y-[6px] divide-muted">
             {filtered.map(post => {
               const author = MOCK_USERS.find(u => u.id === post.authorId)
                 || (post.authorId === currentUser.id ? currentUser : null);
@@ -106,6 +106,13 @@ export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, chats, o
                           <MessageCircle size={18} />
                           {post.comments.length > 0 && post.comments.length}
                         </button>
+                        <button
+                          onClick={() => setSharingPost(post)}
+                          className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors ml-auto"
+                          aria-label="Share post"
+                        >
+                          <Share2 size={18} />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -115,6 +122,44 @@ export const FeedView: React.FC<FeedViewProps> = ({ currentUser, posts, chats, o
           </div>
         )}
       </div>
+
+      {sharingPost && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center" onClick={() => setSharingPost(null)}>
+          <div className="bg-background w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 max-h-[70vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-lg">Share to chat</h3>
+              <button onClick={() => setSharingPost(null)} className="p-1 rounded-full hover:bg-muted">
+                <X size={20} />
+              </button>
+            </div>
+            {chats.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-6 text-center">No chats yet — connect with people first.</p>
+            ) : (
+              <div className="space-y-2">
+                {chats.map(chat => {
+                  const partnerId = chat.participantIds.find(id => id !== currentUser.id);
+                  const partner = MOCK_USERS.find(u => u.id === partnerId);
+                  if (!partner) return null;
+                  return (
+                    <button
+                      key={chat.id}
+                      onClick={() => {
+                        onShareToChat(chat.id, sharingPost.text);
+                        setSharingPost(null);
+                      }}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-muted text-left"
+                    >
+                      <InitialsAvatar name={partner.name} size={40} />
+                      <span className="font-medium flex-1">{partner.name}</span>
+                      <Send size={16} className="text-primary" />
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
