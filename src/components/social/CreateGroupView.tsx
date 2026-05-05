@@ -198,14 +198,14 @@ export const CreateGroupView: React.FC<CreateGroupViewProps> = ({
       <div className="p-6 border-t border-border bg-card/50">
         <Button
           onClick={() => {
-            if (step < 2) setStep(s => s + 1);
+            if (step < 1) setStep(s => s + 1);
             else handleCreate();
           }}
           disabled={!canProceed()}
           className="w-full"
           size="lg"
         >
-          {step === 2 ? 'Create Group' : 'Continue'}
+          {step === 1 ? 'Create Group' : 'Continue'}
         </Button>
       </div>
     </div>
