@@ -187,8 +187,19 @@ const Index = () => {
           <FeedView
             currentUser={state.currentUser}
             posts={posts}
+            chats={chats}
             onLike={handleLike}
             onOpenProfile={() => handleNavigate('profile')}
+            onShareToChat={(chatId, text) => {
+              const m: Message = {
+                id: crypto.randomUUID(),
+                senderId: state.currentUser!.id,
+                text: `📎 Shared a post:\n\n${text}`,
+                timestamp: new Date(),
+              };
+              setChats(prev => prev.map(c => c.id === chatId ? { ...c, messages: [...c.messages, m] } : c));
+              notify('Post shared to chat');
+            }}
           />
         )}
 
