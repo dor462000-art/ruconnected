@@ -21,14 +21,7 @@ interface ProfileViewProps {
 export const ProfileView: React.FC<ProfileViewProps> = ({ user, onUpdate, onLogout }) => {
   const [editing, setEditing] = useState(false);
   const [data, setData] = useState<Partial<UserProfile>>(user);
-  const [volOpen, setVolOpen] = useState(false);
 
-  const toggleVolunteering = (item: string) => {
-    setData(prev => {
-      const arr = prev.volunteering || [];
-      return { ...prev, volunteering: arr.includes(item) ? arr.filter(i => i !== item) : [...arr, item] };
-    });
-  };
 
   const getDegreeList = (school?: SchoolType, level?: DegreeLevel) => {
     if (!school || !level) return [];
