@@ -155,7 +155,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           <p className="text-muted-foreground mt-1">Fill in what's relevant — only academic info is required.</p>
         </header>
         <div className="flex-1 overflow-y-auto px-6 space-y-3 pb-6">
-          <Section id="academic" title="Academic info" icon={GraduationCap}>
+          <Section id="academic" title="Academic Info" icon={GraduationCap}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">School</label>
               <div className="grid grid-cols-2 gap-2">
@@ -212,7 +212,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
             </div>
           </Section>
 
-          <Section id="involvement" title="Campus involvement" optional icon={Heart}>
+          <Section id="involvement" title="Campus Involvement" optional icon={Heart}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">Special Programs</label>
               <select
@@ -251,7 +251,30 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
             </div>
           </Section>
 
-          <Section id="skills" title="Skills & availability" optional icon={Lightbulb}>
+          <Section id="volunteering" title="Volunteering" optional icon={HandHeart}>
+            <div>
+              <label className="text-sm font-semibold mb-1.5 block">Volunteering</label>
+              <select
+                onChange={(e) => { if (e.target.value) { toggleArrayItem('volunteering', e.target.value); e.target.value = ''; } }}
+                className="w-full bg-background border border-border rounded-xl p-3 text-sm"
+              >
+                <option value="">Add volunteering...</option>
+                {[...VOLUNTEERING_LIST].sort().filter(v => !(profile.volunteering || []).includes(v)).map(v => (
+                  <option key={v} value={v}>{v}</option>
+                ))}
+              </select>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {(profile.volunteering || []).map(item => (
+                  <span key={item} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs flex items-center gap-2">
+                    {item}
+                    <button onClick={() => toggleArrayItem('volunteering', item)}>×</button>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Section>
+
+          <Section id="skills" title="Skills & Availability" optional icon={Lightbulb}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">My Skills</label>
               <div className="flex flex-wrap gap-2">
