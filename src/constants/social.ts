@@ -157,6 +157,7 @@ export const VOLUNTEERING_LIST = [
   'Migdalor',
   'Omek',
   'Paamonim',
+  'Podcasting',
   'PUSH',
   'Seven10 Stories',
   'SHAGI',

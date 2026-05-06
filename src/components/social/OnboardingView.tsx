@@ -155,7 +155,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           <p className="text-muted-foreground mt-1">Fill in what's relevant — only academic info is required.</p>
         </header>
         <div className="flex-1 overflow-y-auto px-6 space-y-3 pb-6">
-          <Section id="academic" title="Academic info" icon={GraduationCap}>
+          <Section id="academic" title="Academic Info" icon={GraduationCap}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">School</label>
               <div className="grid grid-cols-2 gap-2">
@@ -212,7 +212,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
             </div>
           </Section>
 
-          <Section id="involvement" title="Campus involvement" optional icon={Heart}>
+          <Section id="involvement" title="Campus Involvement" optional icon={Heart}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">Special Programs</label>
               <select
@@ -251,7 +251,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
             </div>
           </Section>
 
-          <Section id="skills" title="Skills & availability" optional icon={Lightbulb}>
+          <Section id="skills" title="Skills & Availability" optional icon={Lightbulb}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">My Skills</label>
               <div className="flex flex-wrap gap-2">
