@@ -9,7 +9,6 @@ import {
   INTERNATIONAL_GRADUATE_DEGREES,
   ISRAELI_UNDERGRADUATE_DEGREES,
   ISRAELI_GRADUATE_DEGREES,
-  VOLUNTEERING_LIST,
 } from '@/constants/social';
 import { InitialsAvatar } from './InitialsAvatar';
 
