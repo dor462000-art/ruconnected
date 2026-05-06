@@ -16,6 +16,7 @@ import {
   SKILLS_LIST,
   AVAILABILITY_OPTIONS,
 } from '@/constants/social';
+import { SearchableSelect } from './SearchableSelect';
 
 interface OnboardingViewProps {
   studentId: string;
@@ -215,13 +216,12 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           <Section id="involvement" title="Campus Involvement" optional icon={Heart}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">Special Programs</label>
-              <select
-                onChange={(e) => { if (e.target.value) { toggleArrayItem('specialPrograms', e.target.value); e.target.value = ''; } }}
-                className="w-full bg-background border border-border rounded-xl p-3 text-sm"
-              >
-                <option value="">Add a program...</option>
-                {[...SPECIAL_PROGRAMS_LIST].sort().map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
+              <SearchableSelect
+                options={SPECIAL_PROGRAMS_LIST}
+                placeholder="Search programs..."
+                excluded={profile.specialPrograms || []}
+                onSelect={(v) => toggleArrayItem('specialPrograms', v)}
+              />
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profile.specialPrograms || []).map(item => (
                   <span key={item} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs flex items-center gap-2">
@@ -233,13 +233,12 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
             </div>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">Clubs</label>
-              <select
-                onChange={(e) => { if (e.target.value) { toggleArrayItem('clubs', e.target.value); e.target.value = ''; } }}
-                className="w-full bg-background border border-border rounded-xl p-3 text-sm"
-              >
-                <option value="">Add a club...</option>
-                {[...CLUBS_LIST].sort().map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
+              <SearchableSelect
+                options={CLUBS_LIST}
+                placeholder="Search clubs..."
+                excluded={profile.clubs || []}
+                onSelect={(v) => toggleArrayItem('clubs', v)}
+              />
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profile.clubs || []).map(item => (
                   <span key={item} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs flex items-center gap-2">
@@ -254,15 +253,12 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ studentId, onCom
           <Section id="volunteering" title="Volunteering" optional icon={HandHeart}>
             <div>
               <label className="text-sm font-semibold mb-1.5 block">Volunteering</label>
-              <select
-                onChange={(e) => { if (e.target.value) { toggleArrayItem('volunteering', e.target.value); e.target.value = ''; } }}
-                className="w-full bg-background border border-border rounded-xl p-3 text-sm"
-              >
-                <option value="">Add volunteering...</option>
-                {[...VOLUNTEERING_LIST].sort().filter(v => !(profile.volunteering || []).includes(v)).map(v => (
-                  <option key={v} value={v}>{v}</option>
-                ))}
-              </select>
+              <SearchableSelect
+                options={VOLUNTEERING_LIST}
+                placeholder="Search volunteering..."
+                excluded={profile.volunteering || []}
+                onSelect={(v) => toggleArrayItem('volunteering', v)}
+              />
               <div className="flex flex-wrap gap-2 mt-2">
                 {(profile.volunteering || []).map(item => (
                   <span key={item} className="px-3 py-1 bg-accent text-accent-foreground rounded-full text-xs flex items-center gap-2">
