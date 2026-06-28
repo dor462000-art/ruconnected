@@ -58,16 +58,9 @@ const Index = () => {
     setTimeout(() => setNotification(null), 2500);
   };
 
-  const handleVerified = (email: string, isDemo: boolean) => {
-    if (isDemo) {
-      const me = MOCK_USERS[0];
-      setState({ view: 'welcome', currentUser: me, activeChatPartnerId: null, activeGroupId: null });
-      setConnections(new Set(['u2', 'u3', 'u5']));
-      setPosts(SAMPLE_POSTS(me.id));
-    } else {
-      setPendingStudentId(email.split('@')[0]);
-      setState(prev => ({ ...prev, view: 'onboarding' }));
-    }
+  const handleVerified = (email: string) => {
+    setPendingStudentId(email.split('@')[0]);
+    setState(prev => ({ ...prev, view: 'onboarding' }));
   };
 
   const handleOnboardingComplete = (profile: UserProfile) => {
