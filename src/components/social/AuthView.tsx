@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
 import { Logo } from './Logo';
+import { LoginScreen } from './login/LoginScreen';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
+
 
 interface AuthViewProps {
   onVerified: (email: string) => void;
