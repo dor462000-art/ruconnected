@@ -25,7 +25,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   <main className="relative isolate flex h-[100dvh] w-full flex-col overflow-hidden bg-background">
     <BackgroundArtwork />
 
-    <div className="relative z-10 flex flex-1 flex-col items-center px-6 pt-[9vh] sm:pt-[10vh]">
+    <div className="relative z-10 flex flex-1 flex-col items-center px-6 pt-[6vh] sm:pt-[9vh]">
       <div className="flex w-full max-w-sm flex-col items-center text-center">
         <Logo className="mb-5 h-16 w-16 drop-shadow-lg sm:h-20 sm:w-20" />
 
