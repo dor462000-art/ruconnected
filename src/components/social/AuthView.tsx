@@ -49,10 +49,19 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
     setError('');
     setInfo('');
     const lower = email.toLowerCase().trim();
-    if (!lower.endsWith(`@${ALLOWED_DOMAIN}`)) {
-      setError(`Please use your @${ALLOWED_DOMAIN} student email.`);
+    if (!lower) {
+      setError('Please enter your student email address.');
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lower)) {
+      setError('That doesn\u2019t look like a valid email address.');
+      return;
+    }
+    if (!lower.endsWith(`@${ALLOWED_DOMAIN}`)) {
+      setError(`Only Reichman students can join \u2014 please use your @${ALLOWED_DOMAIN} email.`);
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await sendOtp(lower);
