@@ -16,10 +16,11 @@ export const BackgroundArtwork: React.FC = () => (
       aria-hidden="true"
       width={1088}
       height={1920}
-      className="absolute inset-0 h-full w-full object-cover object-bottom md:object-[center_85%]"
+      className="absolute inset-0 h-full w-full object-cover object-bottom"
       draggable={false}
     />
-    {/* readability overlay — top fades to white-ish, bottom untouched */}
-    <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/45 to-transparent" />
+    {/* readability overlay — stronger on wide/short screens where the art sits higher */}
+    <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-transparent md:from-background md:via-background/92 md:to-background/50" />
+
   </div>
 );
