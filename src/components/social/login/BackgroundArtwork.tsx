@@ -1,5 +1,6 @@
 import React from 'react';
-import bgAsset from '@/assets/login-bg.png.asset.json';
+import bgImage from '@/assets/login-bg.webp';
+
 
 /**
  * Full-bleed background artwork layer.
