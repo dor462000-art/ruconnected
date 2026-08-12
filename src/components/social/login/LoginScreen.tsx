@@ -56,7 +56,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           <JoinNetworkButton loading={isSubmitting} />
         </form>
 
-        <p className="mt-4 flex items-center justify-center gap-1.5 text-sm text-muted-foreground">
+        <p className="mt-4 flex items-center justify-center gap-1.5 rounded-full bg-background/70 px-4 py-1.5 text-sm text-muted-foreground backdrop-blur-sm">
           <Lock size={14} />
           Only Reichman students can join
         </p>
