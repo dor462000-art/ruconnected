@@ -11,7 +11,7 @@ import bgImage from '@/assets/login-bg.webp';
 export const BackgroundArtwork: React.FC = () => (
   <div className="absolute inset-0 -z-10 pointer-events-none select-none overflow-hidden">
     <img
-      src={bgAsset.url}
+      src={bgImage}
       alt=""
       aria-hidden="true"
       width={1088}
