@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
 import { Logo } from './Logo';
+import { LoginScreen } from './login/LoginScreen';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
+
 
 interface AuthViewProps {
   onVerified: (email: string) => void;
@@ -48,10 +49,19 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
     setError('');
     setInfo('');
     const lower = email.toLowerCase().trim();
-    if (!lower.endsWith(`@${ALLOWED_DOMAIN}`)) {
-      setError(`Please use your @${ALLOWED_DOMAIN} student email.`);
+    if (!lower) {
+      setError('Please enter your student email address.');
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lower)) {
+      setError('That doesn\u2019t look like a valid email address.');
+      return;
+    }
+    if (!lower.endsWith(`@${ALLOWED_DOMAIN}`)) {
+      setError(`Only Reichman students can join \u2014 please use your @${ALLOWED_DOMAIN} email.`);
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       await sendOtp(lower);
@@ -110,68 +120,63 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
     onVerified(email);
   };
 
+  if (step === 'email') {
+    return (
+      <LoginScreen
+        email={email}
+        onEmailChange={(v) => { setEmail(v); if (error) setError(''); }}
+        onSubmit={handleEmailSubmit}
+        error={error}
+        isSubmitting={isSubmitting}
+        allowedDomain={ALLOWED_DOMAIN}
+      />
+    );
+  }
+
   return (
     <div className="h-[100dvh] bg-background flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm flex flex-col items-center text-center">
-        <Logo className="w-20 h-20 mb-6" />
+        <Logo className="w-16 h-16 mb-6" />
         <h1 className="text-2xl font-extrabold tracking-tight leading-tight mb-2">
-          The exclusive network for Reichman students
+          Verify your student email
         </h1>
 
-        {step === 'email' ? (
-          <form onSubmit={handleEmailSubmit} className="w-full space-y-4 mt-6">
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={`your.name@${ALLOWED_DOMAIN}`}
-              className="h-14 text-base rounded-xl"
-              required
-              autoComplete="email"
-            />
-            {error && <p className="text-destructive text-sm">{error}</p>}
-            <Button type="submit" className="w-full h-14 text-base rounded-xl font-semibold" disabled={isSubmitting}>
-              {isSubmitting ? 'Sending code...' : 'Join the network'}
-              <ArrowRight className="ml-1" size={20} />
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerificationSubmit} className="w-full space-y-4 mt-6">
-            {info && <p className="text-sm text-muted-foreground">{info}</p>}
-            <Input
-              type="text"
-              inputMode="numeric"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder="6-digit code"
-              className="h-14 tracking-widest text-center text-xl rounded-xl"
-              maxLength={6}
-              autoComplete="one-time-code"
-            />
-            {error && <p className="text-destructive text-sm">{error}</p>}
-            <Button type="submit" className="w-full h-14 text-base rounded-xl font-semibold" disabled={isSubmitting}>
-              {isSubmitting ? 'Verifying...' : 'Verify & Enter'}
-            </Button>
-            <div className="flex items-center justify-between text-sm pt-1">
-              <button
-                type="button"
-                onClick={() => { setStep('email'); setOtp(''); setError(''); setInfo(''); }}
-                className="text-muted-foreground underline"
-              >
-                Change email
-              </button>
-              <button
-                type="button"
-                onClick={handleResend}
-                disabled={cooldown > 0 || isSubmitting}
-                className="text-primary font-medium disabled:text-muted-foreground disabled:no-underline underline"
-              >
-                {cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}
-              </button>
-            </div>
-          </form>
-        )}
+        <form onSubmit={handleVerificationSubmit} className="w-full space-y-4 mt-6">
+          {info && <p className="text-sm text-muted-foreground">{info}</p>}
+          <Input
+            type="text"
+            inputMode="numeric"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            placeholder="6-digit code"
+            className="h-14 tracking-widest text-center text-xl rounded-2xl"
+            maxLength={6}
+            autoComplete="one-time-code"
+          />
+          {error && <p className="text-destructive text-sm">{error}</p>}
+          <Button type="submit" className="w-full h-14 text-base rounded-2xl font-semibold" disabled={isSubmitting}>
+            {isSubmitting ? 'Verifying...' : 'Verify & Enter'}
+          </Button>
+          <div className="flex items-center justify-between text-sm pt-1">
+            <button
+              type="button"
+              onClick={() => { setStep('email'); setOtp(''); setError(''); setInfo(''); }}
+              className="text-muted-foreground underline"
+            >
+              Change email
+            </button>
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={cooldown > 0 || isSubmitting}
+              className="text-primary font-medium disabled:text-muted-foreground disabled:no-underline underline"
+            >
+              {cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
+
   );
 };
