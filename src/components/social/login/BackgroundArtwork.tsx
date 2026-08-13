@@ -19,8 +19,9 @@ export const BackgroundArtwork: React.FC = () => (
       className="absolute inset-0 h-full w-full object-cover object-bottom"
       draggable={false}
     />
-    {/* readability overlay — stronger on wide/short screens where the art sits higher */}
-    <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/55 to-transparent md:from-background md:via-background/92 md:to-background/50" />
+    {/* very light readability wash — keeps the top blobs & bottom illustration visible */}
+    <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/10 to-transparent md:from-background/70 md:via-background/40" />
+
 
   </div>
 );
