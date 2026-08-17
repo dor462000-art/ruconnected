@@ -64,18 +64,15 @@ export const AuthView: React.FC<AuthViewProps> = ({ onVerified }) => {
 
     setIsSubmitting(true);
     try {
-      await sendOtp(lower);
       setEmail(lower);
-      setSentAt(Date.now());
-      setCooldown(RESEND_COOLDOWN);
-      setStep('verification');
-      setInfo(`We sent a 6-digit code to ${lower}. It expires in 10 minutes.`);
+      onVerified(lower);
     } catch (err: any) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
     }
   };
+
 
   const handleResend = async () => {
     if (cooldown > 0) return;
