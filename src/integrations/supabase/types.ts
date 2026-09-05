@@ -14,8 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_details: {
+        Row: {
+          created_at: string
+          degree: string | null
+          degree_level: string | null
+          school: string | null
+          updated_at: string
+          user_id: string
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          degree?: string | null
+          degree_level?: string | null
+          school?: string | null
+          updated_at?: string
+          user_id: string
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          degree?: string | null
+          degree_level?: string | null
+          school?: string | null
+          updated_at?: string
+          user_id?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
+      campus_involvement: {
+        Row: {
+          availability: string | null
+          clubs: string[]
+          created_at: string
+          interests: string[]
+          looking_for: string[]
+          skills: string[]
+          special_programs: string[]
+          updated_at: string
+          user_id: string
+          volunteering: string[]
+        }
+        Insert: {
+          availability?: string | null
+          clubs?: string[]
+          created_at?: string
+          interests?: string[]
+          looking_for?: string[]
+          skills?: string[]
+          special_programs?: string[]
+          updated_at?: string
+          user_id: string
+          volunteering?: string[]
+        }
+        Update: {
+          availability?: string | null
+          clubs?: string[]
+          created_at?: string
+          interests?: string[]
+          looking_for?: string[]
+          skills?: string[]
+          special_programs?: string[]
+          updated_at?: string
+          user_id?: string
+          volunteering?: string[]
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          age: number | null
           availability: string[]
           avatar_color: string | null
           bio: string | null
@@ -37,6 +107,7 @@ export type Database = {
           year: string | null
         }
         Insert: {
+          age?: number | null
           availability?: string[]
           avatar_color?: string | null
           bio?: string | null
@@ -58,6 +129,7 @@ export type Database = {
           year?: string | null
         }
         Update: {
+          age?: number | null
           availability?: string[]
           avatar_color?: string | null
           bio?: string | null
