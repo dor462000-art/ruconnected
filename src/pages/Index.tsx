@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppState, UserProfile, ViewType, ChatSession, GroupChat, Message, Attachment, Post } from '@/types/social';
 import { MOCK_USERS } from '@/constants/social';
+import { supabase } from '@/integrations/supabase/client';
+import { loadProfile, saveProfile } from '@/lib/profileStore';
+
 import { Sidebar } from '@/components/social/Sidebar';
 import { AuthView } from '@/components/social/AuthView';
 import { OnboardingView } from '@/components/social/OnboardingView';
@@ -46,6 +49,9 @@ const Index = () => {
   });
 
   const [pendingStudentId, setPendingStudentId] = useState('');
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
+  const [authEmail, setAuthEmail] = useState('');
+  const [booting, setBooting] = useState(true);
   const [connections, setConnections] = useState<Set<string>>(new Set());
   const [chats, setChats] = useState<ChatSession[]>([]);
   const [groups, setGroups] = useState<GroupChat[]>([]);
@@ -58,15 +64,86 @@ const Index = () => {
     setTimeout(() => setNotification(null), 2500);
   };
 
+  // Restore an existing session on startup, and follow auth changes
+  useEffect(() => {
+    let active = true;
+
+    const restore = async (userId: string, email: string) => {
+      setAuthUserId(userId);
+      setAuthEmail(email);
+      const profile = await loadProfile(userId);
+      if (!active) return;
+      if (profile) {
+        setState({ view: 'feed', currentUser: profile, activeChatPartnerId: null, activeGroupId: null });
+        setPosts(SAMPLE_POSTS(profile.id));
+      } else {
+        setPendingStudentId(email.split('@')[0]);
+        setState(prev => ({ ...prev, view: 'onboarding' }));
+      }
+    };
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user?.email) await restore(session.user.id, session.user.email);
+      if (active) setBooting(false);
+    });
+
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setAuthUserId(null);
+        setAuthEmail('');
+        setState({ view: 'auth', currentUser: null, activeChatPartnerId: null, activeGroupId: null });
+      } else if (session?.user?.email) {
+        setAuthUserId(session.user.id);
+        setAuthEmail(session.user.email);
+      }
+    });
+
+    return () => { active = false; sub.subscription.unsubscribe(); };
+  }, []);
+
   const handleVerified = (email: string) => {
+    setAuthEmail(email);
     setPendingStudentId(email.split('@')[0]);
     setState(prev => ({ ...prev, view: 'onboarding' }));
   };
 
-  const handleOnboardingComplete = (profile: UserProfile) => {
-    setState({ view: 'welcome', currentUser: profile, activeChatPartnerId: null, activeGroupId: null });
-    setPosts(SAMPLE_POSTS(profile.id));
+  const handleSignedIn = async (email: string) => {
+    const { data } = await supabase.auth.getUser();
+    const user = data.user;
+    if (!user) return;
+    setAuthUserId(user.id);
+    setAuthEmail(email);
+    const profile = await loadProfile(user.id);
+    if (profile) {
+      setState({ view: 'feed', currentUser: profile, activeChatPartnerId: null, activeGroupId: null });
+      setPosts(SAMPLE_POSTS(profile.id));
+    } else {
+      setPendingStudentId(email.split('@')[0]);
+      setState(prev => ({ ...prev, view: 'onboarding' }));
+    }
   };
+
+  const handleOnboardingComplete = async (profile: UserProfile) => {
+    const { data } = await supabase.auth.getUser();
+    const userId = data.user?.id || authUserId;
+    const email = data.user?.email || authEmail;
+    if (!userId) {
+      notify('Your session expired — please sign in again.', 'info');
+      setState({ view: 'auth', currentUser: null, activeChatPartnerId: null, activeGroupId: null });
+      return;
+    }
+    const saved: UserProfile = { ...profile, id: userId };
+    try {
+      await saveProfile(userId, email, saved);
+    } catch {
+      notify('We could not save your profile — please try again.', 'info');
+      return;
+    }
+    setAuthUserId(userId);
+    setState({ view: 'welcome', currentUser: saved, activeChatPartnerId: null, activeGroupId: null });
+    setPosts(SAMPLE_POSTS(saved.id));
+  };
+
 
   const handleConnect = (userId: string, userName: string) => {
     setConnections(prev => new Set(prev).add(userId));
@@ -102,17 +179,30 @@ const Index = () => {
     setChats(prev => prev.map(c => c.id === activeChatId ? { ...c, messages: [...c.messages, m] } : c));
   };
 
-  const handleUpdateProfile = (updates: Partial<UserProfile>) => {
+  const handleUpdateProfile = async (updates: Partial<UserProfile>) => {
     if (!state.currentUser) return;
-    setState(prev => ({ ...prev, currentUser: { ...prev.currentUser!, ...updates } as UserProfile }));
+    const next = { ...state.currentUser, ...updates } as UserProfile;
+    setState(prev => ({ ...prev, currentUser: next }));
+    if (authUserId) {
+      try {
+        await saveProfile(authUserId, authEmail, next);
+      } catch {
+        notify('We could not save that change — please try again.', 'info');
+        return;
+      }
+    }
     notify('Profile updated');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setAuthUserId(null);
+    setAuthEmail('');
     setState({ view: 'auth', currentUser: null, activeChatPartnerId: null, activeGroupId: null });
     setConnections(new Set());
     setChats([]); setGroups([]); setPosts([]);
   };
+
 
   const handleNavigate = (view: ViewType) => {
     setState(prev => ({ ...prev, view }));
@@ -144,11 +234,15 @@ const Index = () => {
   };
 
   // Auth & onboarding & welcome (full screen)
+  if (booting) {
+    return <div className="h-[100dvh] w-full bg-background" />;
+  }
   if (state.view === 'auth') {
     return (
       <>
         {notification && <Notification message={notification.message} type={notification.type} />}
-        <AuthView onVerified={handleVerified} />
+        <AuthView onVerified={handleVerified} onSignedIn={handleSignedIn} />
+
       </>
     );
   }
