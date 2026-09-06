@@ -179,17 +179,30 @@ const Index = () => {
     setChats(prev => prev.map(c => c.id === activeChatId ? { ...c, messages: [...c.messages, m] } : c));
   };
 
-  const handleUpdateProfile = (updates: Partial<UserProfile>) => {
+  const handleUpdateProfile = async (updates: Partial<UserProfile>) => {
     if (!state.currentUser) return;
-    setState(prev => ({ ...prev, currentUser: { ...prev.currentUser!, ...updates } as UserProfile }));
+    const next = { ...state.currentUser, ...updates } as UserProfile;
+    setState(prev => ({ ...prev, currentUser: next }));
+    if (authUserId) {
+      try {
+        await saveProfile(authUserId, authEmail, next);
+      } catch {
+        notify('We could not save that change — please try again.', 'info');
+        return;
+      }
+    }
     notify('Profile updated');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setAuthUserId(null);
+    setAuthEmail('');
     setState({ view: 'auth', currentUser: null, activeChatPartnerId: null, activeGroupId: null });
     setConnections(new Set());
     setChats([]); setGroups([]); setPosts([]);
   };
+
 
   const handleNavigate = (view: ViewType) => {
     setState(prev => ({ ...prev, view }));
