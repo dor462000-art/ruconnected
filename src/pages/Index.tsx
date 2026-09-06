@@ -234,11 +234,15 @@ const Index = () => {
   };
 
   // Auth & onboarding & welcome (full screen)
+  if (booting) {
+    return <div className="h-[100dvh] w-full bg-background" />;
+  }
   if (state.view === 'auth') {
     return (
       <>
         {notification && <Notification message={notification.message} type={notification.type} />}
-        <AuthView onVerified={handleVerified} />
+        <AuthView onVerified={handleVerified} onSignedIn={handleSignedIn} />
+
       </>
     );
   }
