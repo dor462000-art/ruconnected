@@ -105,7 +105,7 @@ Since you are on the **Free plan** and want to stay free:
 - No Lovable plan upgrade required — works on Free
 - Resend free tier (3,000 emails/month, 100/day) covers a student network
 - The OTP flow stays untouched — you only change how the email is *sent*
-- Medium effort: scaffold templates, modify one edge function file, deploy
+- Medium effort: build branded email HTML in the edge function, modify one file, deploy
 
 **Option A (Lovable Email Domain)** is the simpler path but requires upgrading to Pro ($25/mo+):
 - No custom code, managed queue/retries/rate-limiting
