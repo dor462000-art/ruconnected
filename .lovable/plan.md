@@ -6,8 +6,13 @@
 - Resend is available as a connector (`resend`, gateway-backed)
 - The app already has a Supabase OTP flow expecting a 6-digit code with 10-minute expiry and 60-second resend cooldown
 - Goal: branded RUconnected emails (white, light blue, #3461D6, logo) showing only a 6-digit code — no clickable links
+- **You are on the Free plan** — this is the deciding factor (see below)
 
 Both approaches require DNS records on a subdomain of ruconnected.com. They cannot share the same subdomain.
+
+## Plan requirement (deciding factor)
+- **Option A (Lovable Email Domain):** Requires a paid plan (Pro or above). Not available on Free. Includes 50,000 transactional emails/month.
+- **Option B (Resend):** Works on the Free plan. Resend's free tier gives 3,000 emails/month (100/day) — enough for a student network. No Lovable plan upgrade needed.
 
 ---
 
