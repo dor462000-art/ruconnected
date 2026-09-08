@@ -99,20 +99,20 @@ Both approaches require DNS records on a subdomain of ruconnected.com. They cann
 
 ## Recommendation
 
-**Option A (Lovable Email Domain)** is the better fit for this project:
-- The OTP flow is already built and working — branding is the only gap
-- No custom code to write or maintain
-- Managed queue, retries, rate-limiting, and bounce handling included
-- Same domain handles both auth and future app emails
-- Free within the Lovable Cloud plan
-- Less moving parts = fewer bugs
+Since you are on the **Free plan** and want to stay free:
 
-**Option B (Resend)** makes sense if you specifically want:
-- Resend's dashboard for delivery analytics
-- Direct control over the email API outside Lovable's infrastructure
-- A separate sending subdomain from Lovable's email domain
+**Option B1 (Resend — modify the auth-email-hook)** is the recommended path:
+- No Lovable plan upgrade required — works on Free
+- Resend free tier (3,000 emails/month, 100/day) covers a student network
+- The OTP flow stays untouched — you only change how the email is *sent*
+- Medium effort: scaffold templates, modify one edge function file, deploy
 
-If you choose Resend, **B1** (modify the hook) is the lower-effort path; **B2** (custom OTP) is only worth it if you need full control over the verification lifecycle.
+**Option A (Lovable Email Domain)** is the simpler path but requires upgrading to Pro ($25/mo+):
+- No custom code, managed queue/retries/rate-limiting
+- 50,000 emails/month included
+- Best option if you plan to upgrade to Pro anyway
+
+**Option B2 (fully custom OTP)** is only worth it if you need full control over the verification lifecycle — otherwise B1 is simpler.
 
 ---
 
