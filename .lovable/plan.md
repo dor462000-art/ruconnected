@@ -6,8 +6,13 @@
 - Resend is available as a connector (`resend`, gateway-backed)
 - The app already has a Supabase OTP flow expecting a 6-digit code with 10-minute expiry and 60-second resend cooldown
 - Goal: branded RUconnected emails (white, light blue, #3461D6, logo) showing only a 6-digit code — no clickable links
+- **You are on the Free plan** — this is the deciding factor (see below)
 
 Both approaches require DNS records on a subdomain of ruconnected.com. They cannot share the same subdomain.
+
+## Plan requirement (deciding factor)
+- **Option A (Lovable Email Domain):** Requires a paid plan (Pro or above). Not available on Free. Includes 50,000 transactional emails/month.
+- **Option B (Resend):** Works on the Free plan. Resend's free tier gives 3,000 emails/month (100/day) — enough for a student network. No Lovable plan upgrade needed.
 
 ---
 
@@ -94,40 +99,44 @@ Both approaches require DNS records on a subdomain of ruconnected.com. They cann
 
 ## Recommendation
 
-**Option A (Lovable Email Domain)** is the better fit for this project:
-- The OTP flow is already built and working — branding is the only gap
-- No custom code to write or maintain
-- Managed queue, retries, rate-limiting, and bounce handling included
-- Same domain handles both auth and future app emails
-- Free within the Lovable Cloud plan
-- Less moving parts = fewer bugs
+Since you are on the **Free plan** and want to stay free:
 
-**Option B (Resend)** makes sense if you specifically want:
-- Resend's dashboard for delivery analytics
-- Direct control over the email API outside Lovable's infrastructure
-- A separate sending subdomain from Lovable's email domain
+**Option B1 (Resend — modify the auth-email-hook)** is the recommended path:
+- No Lovable plan upgrade required — works on Free
+- Resend free tier (3,000 emails/month, 100/day) covers a student network
+- The OTP flow stays untouched — you only change how the email is *sent*
+- Medium effort: build branded email HTML in the edge function, modify one file, deploy
 
-If you choose Resend, **B1** (modify the hook) is the lower-effort path; **B2** (custom OTP) is only worth it if you need full control over the verification lifecycle.
+**Option A (Lovable Email Domain)** is the simpler path but requires upgrading to Pro ($25/mo+):
+- No custom code, managed queue/retries/rate-limiting
+- 50,000 emails/month included
+- Best option if you plan to upgrade to Pro anyway
+
+**Option B2 (fully custom OTP)** is only worth it if you need full control over the verification lifecycle — otherwise B1 is simpler.
 
 ---
 
-## If you choose Option A — implementation steps
-1. Open the email setup dialog and select `notify.ruconnected.com` (or your preferred subdomain)
-2. Add the NS records shown at your DNS provider
-3. I scaffold branded auth templates and apply RUconnected styling (white/light blue/#3461D6, logo, code-only — no links)
-4. Deploy the `auth-email-hook` edge function
-5. Emails activate automatically once DNS verifies — monitor in Cloud → Emails
+## If you choose Option A — implementation steps (requires Pro upgrade)
+1. Upgrade to Pro (Settings → Plans & credits)
+2. Open the email setup dialog and select `notify.ruconnected.com` (or your preferred subdomain)
+3. Add the NS records shown at your DNS provider
+4. I scaffold branded auth templates and apply RUconnected styling (white/light blue/#3461D6, logo, code-only — no links)
+5. Deploy the `auth-email-hook` edge function
+6. Emails activate automatically once DNS verifies — monitor in Cloud → Emails
 
-## If you choose Option B1 — implementation steps
+## If you choose Option B1 — implementation steps (free, recommended for Free plan)
 1. Connect the Resend connector (in-app card)
 2. Verify `mail.ruconnected.com` in Resend (add SPF/DKIM/MX at your DNS provider)
-3. Scaffold auth templates for the HTML rendering
-4. I modify the `auth-email-hook` to send via the Resend gateway instead of Lovable's queue
-5. Add error handling and response surfacing in the hook
-6. Deploy the modified `auth-email-hook`
-7. Test end-to-end with a @post.runi.ac.il address
+3. Scaffold auth templates for the HTML rendering (requires a Lovable email domain — see note below)
+4. **Alternative for Free plan:** Since scaffolding auth templates needs a Lovable email domain (Pro), I'll write the branded email HTML directly in the edge function instead
+5. I modify the `auth-email-hook` to render the branded email and send via the Resend gateway instead of Lovable's queue
+6. Add error handling and response surfacing in the hook
+7. Deploy the modified `auth-email-hook`
+8. Test end-to-end with a @post.runi.ac.il address
 
-## If you choose Option B2 — implementation steps
+**Important Free-plan note:** The `scaffold_auth_email_templates` tool requires a Lovable email domain, which needs Pro. On the Free plan, I'll build the auth-email-hook manually with the branded HTML template inline, calling Resend's gateway directly. The hook name must still be `auth-email-hook` (system requirement).
+
+## If you choose Option B2 — implementation steps (free, full custom OTP)
 1. Connect the Resend connector
 2. Verify `mail.ruconnected.com` in Resend
 3. Create a `otp_codes` table (code, email, expiry, used) with RLS
